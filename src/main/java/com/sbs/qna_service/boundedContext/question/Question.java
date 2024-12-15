@@ -4,11 +4,13 @@ import com.sbs.qna_service.boundedContext.answer.Answer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity // 스프링부트가 Question를 Entity로 본다.
 public class Question {
