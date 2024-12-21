@@ -4,7 +4,6 @@ import com.sbs.qna_service.boundedContext.answer.Answer;
 import com.sbs.qna_service.boundedContext.answer.AnswerRepository;
 import com.sbs.qna_service.boundedContext.question.Question;
 import com.sbs.qna_service.boundedContext.question.QuestionRepository;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -234,11 +233,21 @@ class QnaServiceApplicationTests {
 		Answer a = oa.get();
 		assertEquals(2, a.getQuestion().getId());
 	}
-
+	
+	
+	/*
+	# EAGER를 사용한 경우
+	SELECT Q.*, A.*
+	FROM question AS Q
+	LEFT JOIN answer AS A
+	ON Q.id = A.question_id 
+	WHERE Q.id = ? 
+	*/
+	
 	// 테스트 코드에서는 Transactional을 붙여줘야 한다.
 	// findById 메서드를 실행하고 나면 DB가 끝어지기 때문에
 	// Transactional 어노테이션을 사용하면 메서드가 종료될 때까지 DB연결이 유지된다.
-	@Transactional // 메서드 내에서 트랜잭션이 유지된다!
+	// @Transactional // 메서드 내에서 트랜잭션이 유지된다!
 	@Test
 	@DisplayName("질문을 통해 답변 찾기")
 	void t011() {

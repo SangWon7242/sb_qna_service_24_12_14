@@ -33,7 +33,7 @@ public class Question {
   // answerList : 만들어도 되고 만들지 않아도 된다.
   // 다만 만들면 해당 객체(질문객체)에서 관련된 답변을 찾을 때 편하다.
   // CascadeType.REMOVE : 질문이 삭제되면 답변도 같이 삭제된다.
-  @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE) // fetch = FetchType.EAGER
   private List<Answer> answerList = new ArrayList<>();
 
   // 외부에서 answerList 필드에 접근하는 것을 차단
