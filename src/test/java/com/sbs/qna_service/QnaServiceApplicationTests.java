@@ -4,12 +4,12 @@ import com.sbs.qna_service.boundedContext.answer.Answer;
 import com.sbs.qna_service.boundedContext.answer.AnswerRepository;
 import com.sbs.qna_service.boundedContext.question.Question;
 import com.sbs.qna_service.boundedContext.question.QuestionRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -238,7 +238,7 @@ class QnaServiceApplicationTests {
 	// 테스트 코드에서는 Transactional을 붙여줘야 한다.
 	// findById 메서드를 실행하고 나면 DB가 끝어지기 때문에
 	// Transactional 어노테이션을 사용하면 메서드가 종료될 때까지 DB연결이 유지된다.
-	@Transactional
+	@Transactional // 메서드 내에서 트랜잭션이 유지된다!
 	@Test
 	@DisplayName("질문을 통해 답변 찾기")
 	void t011() {
@@ -246,8 +246,10 @@ class QnaServiceApplicationTests {
 		Optional<Question> oq = questionRepository.findById(2);
 		assertTrue(oq.isPresent());
 		Question q = oq.get();
+		// 테스트 환경에서는 get해서 가져온 뒤 DB연결을 끊음
 
-		List<Answer> answerList = q.getAnswerList();
+		// SQL : SELECT * FROM answer WHERE question_id = 2;
+		List<Answer> answerList = q.getAnswerList(); // DB 통신이 끊긴 뒤 answer를 가져 옴 => 실패
 
 		assertEquals(1, answerList.size());
 		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
