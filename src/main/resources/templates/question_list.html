@@ -14,30 +14,25 @@
   }
 </style>
 
-<h1>질문 리스트</h1>
-
-<table border="1">
-  <colgroup>
-    <col width="60px">
-    <col width="250px">
-    <col width="250px">
-  </colgroup>
-  <thead>
-  <tr>
-    <th>번호</th>
-    <th>제목</th>
-    <th>작성일시</th>
-  </tr>
-  </thead>
-  <tbody>
-    <tr th:each="q : ${questionList}">
-      <td>
-        <a th:href="@{|/question/detail/${q.id}|}" th:text="${q.id}"></a>
-      </td>
-      <td>
-        <a th:href="@{|/question/detail/${q.id}|}" th:text="${q.subject}"></a>
-      </td>
-      <td th:text="${q.createDate}"></td>
-    </tr>
-  </tbody>
-</table>
+<div class="container my-3">
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성일시</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="q, loop : ${questionList}">
+        <td>
+          <a th:text="${loop.count}" th:href="@{|/question/detail/${q.id}|}"></a>
+        </td>
+        <td>
+          <a th:href="@{|/question/detail/${q.id}|}" th:text="${q.subject}"></a>
+        </td>
+        <td th:text="${#temporals.format(q.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
