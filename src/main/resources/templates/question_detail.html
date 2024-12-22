@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+
 <h1>
   <span th:text="${id}"></span>번
   질문 상세내용
@@ -9,11 +11,6 @@
 <!-- #lists.size(리스트) : List에 size() 함수와 같다. -->
 <h5 th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
 
-<h5>
-  <span th:text="${#lists.size(question.answerList)}"></span>
-  개의 답변이 있습니다.
-</h5>
-
 <div>
   <ul>
     <li th:each="answer : ${question.answerList}" th:text="${answer.content}"></li>
@@ -21,5 +18,5 @@
 </div>
 <form th:action="@{|/answer/create/${question.id}|}" method="POST">
   <textarea name="content" id="content" rows="15"></textarea>
-  <button type="submit">답변등록</button>
+  <input type="submit" value="답변등록">
 </form>
