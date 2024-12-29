@@ -4,6 +4,7 @@ import com.sbs.qna_service.boundedContext.answer.Answer;
 import com.sbs.qna_service.boundedContext.answer.AnswerRepository;
 import com.sbs.qna_service.boundedContext.question.Question;
 import com.sbs.qna_service.boundedContext.question.QuestionRepository;
+import com.sbs.qna_service.boundedContext.question.QuestionService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,12 +16,16 @@ import org.springframework.test.annotation.Rollback;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class QnaServiceApplicationTests {
+
+	@Autowired
+	private QuestionService questionService;
 
 	@Autowired // 필드 주입
 	private QuestionRepository questionRepository;
@@ -254,7 +259,6 @@ class QnaServiceApplicationTests {
 	@DisplayName("질문을 통해 답변 찾기")
 	@Rollback(false) // 테스트 메서드가 끝난 후에도 트랜잭션이 롤백되지 않고 커밋된다.
 	void t011() {
-		System.out.println("실행");
 		// SQL : SELECT * FROM question WHERE id = 2;
 		Optional<Question> oq = questionRepository.findById(2);
 		assertTrue(oq.isPresent());
@@ -262,10 +266,18 @@ class QnaServiceApplicationTests {
 		// 테스트 환경에서는 get해서 가져온 뒤 DB연결을 끊음
 
 		// SQL : SELECT * FROM answer WHERE question_id = 2;
-		System.out.println("실행2");
 		List<Answer> answerList = q.getAnswerList(); // DB 통신이 끊긴 뒤 answer를 가져 옴 => 실패
 
 		assertEquals(1, answerList.size());
 		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+	}
+
+	@Test
+	@DisplayName("대량의 테스트 데이터 만들기")
+	void t012() {
+		IntStream.rangeClosed(3, 300)
+				.forEach(
+						no -> questionService.create("테스트 제목입니다.%d".formatted(no), "테스트 내용입니다.%d".formatted(no)
+						));
 	}
 }
