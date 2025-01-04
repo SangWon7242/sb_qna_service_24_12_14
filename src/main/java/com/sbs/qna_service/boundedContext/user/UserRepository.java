@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface UserRepository extends JpaRepository<SiteUser, Long> {
   @Modifying
   @Transactional
-  @Query(value = "ALTER TABLE answer AUTO_INCREMENT = 1", nativeQuery = true)
+  @Query(value = "ALTER TABLE site_user AUTO_INCREMENT = 1", nativeQuery = true)
   void clearAutoIncrement();
 }

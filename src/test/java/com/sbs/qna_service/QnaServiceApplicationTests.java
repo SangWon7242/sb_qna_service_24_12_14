@@ -56,7 +56,6 @@ class QnaServiceApplicationTests {
 
 		// 모든 데이터 삭제
 		userRepository.deleteAll();
-
 		userRepository.clearAutoIncrement();
 
 		// 회원 2명 생성
