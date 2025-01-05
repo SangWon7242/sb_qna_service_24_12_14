@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,7 +52,8 @@ public class QuestionController {
   public String questionCreate(
       @Valid QuestionForm questionForm,
       BindingResult bindingResult,
-      Principal principal
+      Principal principal, // 현재 인증된 사용자의 정보를 나타냄
+      Authentication authentication
   ) {
     if (bindingResult.hasErrors()) { // hasErrors : 에러가 존재한다면 true, 존재하지 않으면 false
       // question_form.html 실행
@@ -61,6 +63,11 @@ public class QuestionController {
 
     SiteUser siteUser = userService.getUser(principal.getName());
     questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
+
+    /*
+    System.out.println("username : " + principal.getName()); // 로그인한 사용자의 이름
+    System.out.println("사용자 권한 : " + authentication.getAuthorities().toString()); // 로그인한 사용자의 권한
+    */
 
     return "redirect:/question/list"; // 질문 저장후 질문목록으로 이동
   }
