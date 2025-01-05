@@ -27,6 +27,7 @@ public class Question {
   private String content;
 
   private LocalDateTime createDate; // DATETIME
+  private LocalDateTime modifyDate;
 
   @ManyToOne
   private SiteUser author;
