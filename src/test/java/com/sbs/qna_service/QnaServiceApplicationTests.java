@@ -72,6 +72,21 @@ class QnaServiceApplicationTests {
 
 		// 답변 1개 생성하기
 		Answer a1 = answerService.create(q2, "네 자동으로 생성됩니다.", user2);
+
+		// 1번 질문에 2명의 회원이 추천
+		q1.addVoter(user1); // 1번 질문에 user1(이)가 q1 질문을 추천
+		q1.addVoter(user2); // 1번 질문에 user2(이)가 q1 질문을 추천
+		questionRepository.save(q1);
+		
+		q2.addVoter(user1);
+		q2.addVoter(user2);
+		questionRepository.save(q2);
+		
+		// 2번 질문에 달린 1번 답변에 2명의 회원이 추천
+		a1.addVoter(user1);
+		a1.addVoter(user2);
+		answerRepository.save(a1);
+
 	}
 
 	@Test
