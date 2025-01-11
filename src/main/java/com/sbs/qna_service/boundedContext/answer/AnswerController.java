@@ -29,7 +29,7 @@ public class AnswerController {
 
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/create/{id}")
-  public String createAnswer(
+  public String createAnswer (
       Model model,
       @PathVariable("id") Integer id,
       @Valid AnswerForm answerForm,
@@ -51,7 +51,7 @@ public class AnswerController {
 
     // return "%d번 질문에 대한 답변이 생성되었습니다.(답변 번호 : %d)".formatted(id, answer.getId());
 
-    return "redirect:/question/detail/%s".formatted(id);
+    return "redirect:/question/detail/%s#answer_%d".formatted(id, answer.getId());
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -81,7 +81,7 @@ public class AnswerController {
     }
 
     answerService.modify(answer, answerForm.getContent());
-    return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+    return String.format("redirect:/question/detail/%s#answer_%d", answer.getQuestion().getId(), answer.getId());
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -105,6 +105,6 @@ public class AnswerController {
     SiteUser siteUser = userService.getUser(principal.getName());
 
     answerService.vote(answer, siteUser);
-    return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+    return String.format("redirect:/question/detail/%s#answer_%d", answer.getQuestion().getId(), answer.getId());
   }
 }
